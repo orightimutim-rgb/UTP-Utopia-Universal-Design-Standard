@@ -43,3 +43,7 @@ Do not enable unrelated plugins by default. Add Figma, Notion, Expo, Vercel, Net
 - Explain any mismatch between repository documentation and implementation before making broad structural changes.
 - Prefer a short plan for changes spanning multiple files.
 - Preserve existing behavior unless the task explicitly requests a behavior change.
+
+## Shared learning and preview standard
+
+Also follow [AI_WORKFLOW.md](AI_WORKFLOW.md): explain the code in Traditional Chinese, verify changes, and provide a directly viewable or reproducible preview. Existing project-specific rules in this file remain in force.
