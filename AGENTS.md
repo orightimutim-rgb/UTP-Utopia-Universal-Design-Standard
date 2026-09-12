@@ -6,7 +6,7 @@ This repository currently contains a SwiftUI iOS client for controlling cloud co
 
 ## Primary operating model
 
-- The user operates mainly from an iPhone 15 through ChatGPT/Codex and GitHub.
+- The user operates mainly from an iPhone 17 through ChatGPT/Codex and GitHub.
 - Prefer cloud-agent and pull-request workflows over instructions that require local terminal access on the phone.
 - Never assume Xcode can run on iPhone. Any build, simulator, signing, profiling, or archive step must run on a trusted macOS environment or CI runner.
 - Keep tasks small, reviewable, and reversible.
