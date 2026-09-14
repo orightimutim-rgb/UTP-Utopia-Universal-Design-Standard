@@ -2,8 +2,10 @@ import Foundation
 
 final class SSEClient: ObservableObject {
     private var task: URLSessionDataTask?
+    private var session: URLSession?
     private var buffer = ""
     private var lastEventId: String?
+    private var intentionallyDisconnected = false
 
     var onEvent: ((StreamEvent) -> Void)?
     var onComplete: (() -> Void)?
@@ -11,12 +13,14 @@ final class SSEClient: ObservableObject {
 
     @MainActor
     func connect(agentId: String, runId: String) {
-        disconnect()
+        disconnect(intentional: false)
 
         guard let apiKey = KeychainService.shared.loadAPIKey() else {
             onError?(CursorAPIError.unauthorized)
             return
         }
+
+        intentionallyDisconnected = false
 
         let url = URL(string: "https://api.cursor.com/v1/agents/\(agentId)/runs/\(runId)/stream")!
         var request = URLRequest(url: url)
@@ -27,16 +31,34 @@ final class SSEClient: ObservableObject {
             request.setValue(lastEventId, forHTTPHeaderField: "Last-Event-ID")
         }
 
-        let session = URLSession(configuration: .default, delegate: SSEDelegate(client: self), delegateQueue: nil)
+        let session = URLSession(
+            configuration: .default,
+            delegate: SSEDelegate(client: self),
+            delegateQueue: nil
+        )
+        self.session = session
         task = session.dataTask(with: request)
         task?.resume()
     }
 
     @MainActor
     func disconnect() {
+        disconnect(intentional: true)
+    }
+
+    @MainActor
+    private func disconnect(intentional: Bool) {
+        intentionallyDisconnected = intentional
         task?.cancel()
         task = nil
         buffer = ""
+        session?.invalidateAndCancel()
+        session = nil
+    }
+
+    @MainActor
+    var isIntentionallyDisconnected: Bool {
+        intentionallyDisconnected
     }
 
     @MainActor
@@ -53,11 +75,13 @@ final class SSEClient: ObservableObject {
 
     @MainActor
     func finish() {
+        guard !intentionallyDisconnected else { return }
         onComplete?()
     }
 
     @MainActor
     func fail(_ error: Error) {
+        guard !intentionallyDisconnected else { return }
         onError?(error)
     }
 
@@ -118,9 +142,10 @@ private final class SSEDelegate: NSObject, URLSessionDataDelegate {
                     client?.fail(CursorAPIError.unauthorized)
                 }
             case 410:
+                // Stream retention window expired — do not reconnect; fetch final run via REST.
                 completionHandler(.cancel)
                 Task { @MainActor in
-                    client?.finish()
+                    client?.fail(CursorAPIError.streamExpired)
                 }
             default:
                 completionHandler(.cancel)
@@ -142,6 +167,11 @@ private final class SSEDelegate: NSObject, URLSessionDataDelegate {
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         Task { @MainActor in
+            // User-initiated disconnect must never trigger reconnect / complete handlers.
+            if client?.isIntentionallyDisconnected == true {
+                return
+            }
+
             if let error, (error as NSError).code != NSURLErrorCancelled {
                 client?.fail(error)
             } else if receivedSuccessfulResponse {

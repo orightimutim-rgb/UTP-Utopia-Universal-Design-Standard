@@ -22,6 +22,8 @@ final class AgentDetailViewModel: ObservableObject {
     private var toolCallMessageIds: [String: String] = [:]
     private var reconnectAttempts = 0
     private let maxReconnectAttempts = 3
+    /// Prevents reconnect after the user cancels a run.
+    private var isCancelling = false
 
     init(agentId: String, initialPrompt: String? = nil) {
         self.agentId = agentId
@@ -44,18 +46,36 @@ final class AgentDetailViewModel: ObservableObject {
         sseClient.onError = { [weak self] error in
             Task { @MainActor in
                 guard let self else { return }
-                if case CursorAPIError.unauthorized = error {
-                    isStreaming = false
-                    errorMessage = error.localizedDescription
+
+                if self.isCancelling {
+                    self.isStreaming = false
                     return
                 }
-                await handleStreamEnded()
+
+                if case CursorAPIError.unauthorized = error {
+                    self.isStreaming = false
+                    self.errorMessage = error.localizedDescription
+                    return
+                }
+
+                // 410 stream retention expired: never reconnect — fetch final run via REST.
+                if case CursorAPIError.streamExpired = error {
+                    await self.fetchFinalRunState()
+                    return
+                }
+
+                await self.handleStreamEnded()
             }
         }
 
         sseClient.onComplete = { [weak self] in
             Task { @MainActor in
-                await self?.handleStreamEnded()
+                guard let self else { return }
+                if self.isCancelling {
+                    self.isStreaming = false
+                    return
+                }
+                await self.handleStreamEnded()
             }
         }
     }
@@ -123,6 +143,7 @@ final class AgentDetailViewModel: ObservableObject {
               let status = currentRunStatus,
               !status.isTerminal else { return }
 
+        isCancelling = true
         do {
             try await CursorAPIService.shared.cancelRun(agentId: agentId, runId: run.id)
             sseClient.disconnect()
@@ -133,9 +154,11 @@ final class AgentDetailViewModel: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+        isCancelling = false
     }
 
     private func startStreaming(runId: String) {
+        isCancelling = false
         isStreaming = true
         streamingMessageId = nil
         toolCallMessageIds = [:]
@@ -144,6 +167,11 @@ final class AgentDetailViewModel: ObservableObject {
     }
 
     private func handleStreamEnded() async {
+        guard !isCancelling else {
+            isStreaming = false
+            return
+        }
+
         guard isStreaming,
               let runId = currentRun?.id,
               let status = currentRunStatus,
@@ -155,11 +183,20 @@ final class AgentDetailViewModel: ObservableObject {
         if reconnectAttempts < maxReconnectAttempts {
             reconnectAttempts += 1
             try? await Task.sleep(nanoseconds: UInt64(reconnectAttempts) * 500_000_000)
+            guard !isCancelling, isStreaming else {
+                isStreaming = false
+                return
+            }
             sseClient.connect(agentId: agentId, runId: runId)
             return
         }
 
+        await fetchFinalRunState()
+    }
+
+    private func fetchFinalRunState() async {
         isStreaming = false
+        guard let runId = currentRun?.id else { return }
         if let run = try? await CursorAPIService.shared.getRun(agentId: agentId, runId: runId) {
             currentRun = run
             currentRunStatus = run.status
@@ -170,6 +207,11 @@ final class AgentDetailViewModel: ObservableObject {
     }
 
     private func handleStreamEvent(_ event: StreamEvent) {
+        // A live event after reconnect means the stream is healthy again.
+        if reconnectAttempts > 0 {
+            reconnectAttempts = 0
+        }
+
         switch event.type {
         case .status:
             if let statusStr = event.data["status"] as? String,
@@ -188,12 +230,19 @@ final class AgentDetailViewModel: ObservableObject {
             }
 
         case .toolCall:
-            let callId = event.data["callId"] as? String ?? UUID().uuidString
             let name = event.data["name"] as? String ?? "tool"
             let status = event.data["status"] as? String ?? "running"
+            // Prefer server callId; fall back to a stable name-based key — never a random UUID.
+            let callId = (event.data["callId"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            let key: String
+            if let callId, !callId.isEmpty {
+                key = callId
+            } else {
+                key = "name:\(name)"
+            }
             let statusText = status == "completed" ? "Completed" : "Running…"
 
-            if let messageId = toolCallMessageIds[callId],
+            if let messageId = toolCallMessageIds[key],
                let index = messages.firstIndex(where: { $0.id == messageId }) {
                 messages[index].text = statusText
                 messages[index].toolStatus = status
@@ -204,7 +253,7 @@ final class AgentDetailViewModel: ObservableObject {
                     toolName: name,
                     toolStatus: status
                 )
-                toolCallMessageIds[callId] = message.id
+                toolCallMessageIds[key] = message.id
                 messages.append(message)
             }
 
@@ -264,5 +313,4 @@ final class AgentDetailViewModel: ObservableObject {
     private func appendAssistantMessage(_ text: String, isStreaming: Bool) {
         messages.append(ChatMessage(role: .assistant, text: text, isStreaming: isStreaming))
     }
-
 }

@@ -5,6 +5,7 @@ enum CursorAPIError: LocalizedError {
     case notFound
     case conflict(String)
     case rateLimited
+    case streamExpired
     case serverError(Int)
     case decodingFailed
     case networkError(Error)
@@ -20,6 +21,8 @@ enum CursorAPIError: LocalizedError {
             return message
         case .rateLimited:
             return "Rate limited. Please wait a moment and try again."
+        case .streamExpired:
+            return "Live stream expired. Fetching the latest run result…"
         case .serverError(let code):
             return "Server error (\(code)). Try again later."
         case .decodingFailed:
