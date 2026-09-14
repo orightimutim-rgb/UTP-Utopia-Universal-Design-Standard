@@ -7,6 +7,7 @@ struct NewAgentView: View {
     @State private var navigateToAgent = false
     @State private var createdAgentId: String?
     @State private var createdAgentName: String?
+    @State private var createdPrompt: String?
 
     var body: some View {
         NavigationStack {
@@ -26,7 +27,11 @@ struct NewAgentView: View {
             .navigationTitle("New Agent")
             .navigationDestination(isPresented: $navigateToAgent) {
                 if let id = createdAgentId, let name = createdAgentName {
-                    AgentDetailView(agentId: id, agentName: name)
+                    AgentDetailView(
+                        agentId: id,
+                        agentName: name,
+                        initialPrompt: createdPrompt
+                    )
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -132,6 +137,7 @@ struct NewAgentView: View {
         if success, let agent = viewModel.createdAgent {
             createdAgentId = agent.id
             createdAgentName = agent.name
+            createdPrompt = viewModel.prompt.trimmingCharacters(in: .whitespacesAndNewlines)
             viewModel.reset()
             onCreated?()
             navigateToAgent = true

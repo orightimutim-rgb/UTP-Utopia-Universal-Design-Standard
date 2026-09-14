@@ -95,9 +95,43 @@ final class SSEClient: ObservableObject {
 
 private final class SSEDelegate: NSObject, URLSessionDataDelegate {
     weak var client: SSEClient?
+    private var receivedSuccessfulResponse = false
 
     init(client: SSEClient) {
         self.client = client
+    }
+
+    func urlSession(
+        _ session: URLSession,
+        dataTask: URLSessionDataTask,
+        didReceive response: URLResponse,
+        completionHandler: @escaping (URLSession.ResponseDisposition) -> Void
+    ) {
+        if let httpResponse = response as? HTTPURLResponse {
+            switch httpResponse.statusCode {
+            case 200...299:
+                receivedSuccessfulResponse = true
+                completionHandler(.allow)
+            case 401:
+                completionHandler(.cancel)
+                Task { @MainActor in
+                    client?.fail(CursorAPIError.unauthorized)
+                }
+            case 410:
+                completionHandler(.cancel)
+                Task { @MainActor in
+                    client?.finish()
+                }
+            default:
+                completionHandler(.cancel)
+                Task { @MainActor in
+                    client?.fail(CursorAPIError.serverError(httpResponse.statusCode))
+                }
+            }
+            return
+        }
+
+        completionHandler(.allow)
     }
 
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
@@ -110,7 +144,7 @@ private final class SSEDelegate: NSObject, URLSessionDataDelegate {
         Task { @MainActor in
             if let error, (error as NSError).code != NSURLErrorCancelled {
                 client?.fail(error)
-            } else {
+            } else if receivedSuccessfulResponse {
                 client?.finish()
             }
         }

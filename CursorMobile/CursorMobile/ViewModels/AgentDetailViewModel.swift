@@ -19,9 +19,18 @@ final class AgentDetailViewModel: ObservableObject {
 
     private let sseClient = SSEClient()
     private var streamingMessageId: String?
+    private var toolCallMessageIds: [String: String] = [:]
+    private var reconnectAttempts = 0
+    private let maxReconnectAttempts = 3
 
-    init(agentId: String) {
+    init(agentId: String, initialPrompt: String? = nil) {
         self.agentId = agentId
+        if let initialPrompt {
+            let trimmed = initialPrompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty {
+                messages.append(ChatMessage(role: .user, text: trimmed))
+            }
+        }
         setupSSE()
     }
 
@@ -34,14 +43,19 @@ final class AgentDetailViewModel: ObservableObject {
 
         sseClient.onError = { [weak self] error in
             Task { @MainActor in
-                self?.isStreaming = false
-                self?.errorMessage = error.localizedDescription
+                guard let self else { return }
+                if case CursorAPIError.unauthorized = error {
+                    isStreaming = false
+                    errorMessage = error.localizedDescription
+                    return
+                }
+                await handleStreamEnded()
             }
         }
 
         sseClient.onComplete = { [weak self] in
             Task { @MainActor in
-                self?.isStreaming = false
+                await self?.handleStreamEnded()
             }
         }
     }
@@ -124,7 +138,35 @@ final class AgentDetailViewModel: ObservableObject {
     private func startStreaming(runId: String) {
         isStreaming = true
         streamingMessageId = nil
+        toolCallMessageIds = [:]
+        reconnectAttempts = 0
         sseClient.connect(agentId: agentId, runId: runId)
+    }
+
+    private func handleStreamEnded() async {
+        guard isStreaming,
+              let runId = currentRun?.id,
+              let status = currentRunStatus,
+              !status.isTerminal else {
+            isStreaming = false
+            return
+        }
+
+        if reconnectAttempts < maxReconnectAttempts {
+            reconnectAttempts += 1
+            try? await Task.sleep(nanoseconds: UInt64(reconnectAttempts) * 500_000_000)
+            sseClient.connect(agentId: agentId, runId: runId)
+            return
+        }
+
+        isStreaming = false
+        if let run = try? await CursorAPIService.shared.getRun(agentId: agentId, runId: runId) {
+            currentRun = run
+            currentRunStatus = run.status
+            if run.status.isTerminal, let result = run.result, !result.isEmpty {
+                finalizeStreamingMessage(with: result)
+            }
+        }
     }
 
     private func handleStreamEvent(_ event: StreamEvent) {
@@ -146,14 +188,25 @@ final class AgentDetailViewModel: ObservableObject {
             }
 
         case .toolCall:
+            let callId = event.data["callId"] as? String ?? UUID().uuidString
             let name = event.data["name"] as? String ?? "tool"
             let status = event.data["status"] as? String ?? "running"
-            messages.append(ChatMessage(
-                role: .toolCall,
-                text: status == "completed" ? "Completed" : "Running…",
-                toolName: name,
-                toolStatus: status
-            ))
+            let statusText = status == "completed" ? "Completed" : "Running…"
+
+            if let messageId = toolCallMessageIds[callId],
+               let index = messages.firstIndex(where: { $0.id == messageId }) {
+                messages[index].text = statusText
+                messages[index].toolStatus = status
+            } else {
+                let message = ChatMessage(
+                    role: .toolCall,
+                    text: statusText,
+                    toolName: name,
+                    toolStatus: status
+                )
+                toolCallMessageIds[callId] = message.id
+                messages.append(message)
+            }
 
         case .result:
             if let text = event.data["text"] as? String {
