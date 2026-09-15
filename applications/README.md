@@ -31,6 +31,7 @@
 
 - ChatGPT / Codex 自訂指令
 - GitHub ↔ GPT ↔ Cursor 同步協定（`docs/GITHUB_GPT_SYNC.md`）
+- Google Keep ↔ GPT 同步協定（`docs/KEEP_GPT_SYNC.md`，手動貼上）
 - 共用任務板（`docs/TASK_BOARD.md`）
 
 待補充：Claude、Gemini、Grok 等同級短指令。
