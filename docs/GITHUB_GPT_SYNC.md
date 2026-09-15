@@ -16,7 +16,8 @@
 1. **程式碼** → `main` 與已合併的 PR  
 2. **進行中工作** → 開啟中的 Pull Request（標題、說明、checklist）  
 3. **待辦與優先順序** → [`docs/TASK_BOARD.md`](TASK_BOARD.md)（因 Issues 目前關閉，先用任務板）  
-4. **AI 行為準則** → [`AGENTS.md`](../AGENTS.md) + [`AI_WORKFLOW.md`](../AI_WORKFLOW.md)
+4. **AI 行為準則** → [`AGENTS.md`](../AGENTS.md) + [`AI_WORKFLOW.md`](../AI_WORKFLOW.md)  
+5. **隨手靈感（Keep）** → [`KEEP_GPT_SYNC.md`](KEEP_GPT_SYNC.md)（手動貼上，非自動 API）
 
 ## 標準一回合流程（手機可用）
 
