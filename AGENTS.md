@@ -51,3 +51,7 @@ Also follow [AI_WORKFLOW.md](AI_WORKFLOW.md): explain the code in Traditional Ch
 ## GitHub ↔ ChatGPT sync
 
 When coordinating work across GitHub, ChatGPT/Codex, and Cursor Cloud Agents, follow [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md) and keep [docs/TASK_BOARD.md](docs/TASK_BOARD.md) current while Issues are disabled.
+
+## Google Keep ↔ ChatGPT sync
+
+There is no Keep API in this environment. For Keep notes, follow [docs/KEEP_GPT_SYNC.md](docs/KEEP_GPT_SYNC.md): the human pastes notes into ChatGPT or [docs/learning/keep-inbox.md](docs/learning/keep-inbox.md). Do not claim automated Keep access.

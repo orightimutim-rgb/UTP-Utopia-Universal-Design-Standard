@@ -74,7 +74,8 @@ The app includes three main tabs:
 
 This repo is meant to be driven from an iPhone via ChatGPT/Codex and GitHub:
 
-- [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md) — shared sync protocol
+- [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md) — GitHub ↔ ChatGPT ↔ Cursor sync
+- [docs/KEEP_GPT_SYNC.md](docs/KEEP_GPT_SYNC.md) — Google Keep ↔ ChatGPT sync (manual paste; no Keep API)
 - [docs/TASK_BOARD.md](docs/TASK_BOARD.md) — Now / Next / Done board (Issues currently disabled)
 - [applications/ai-assistants/](applications/ai-assistants/) — paste-ready ChatGPT instructions
 
