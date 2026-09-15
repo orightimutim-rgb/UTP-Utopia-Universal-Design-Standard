@@ -1,0 +1,42 @@
+name: 錯誤回報
+description: App 或文件行為不正確
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: happen
+    attributes:
+      label: 實際發生什麼
+    validations:
+      required: true
+  - type: textarea
+    id: expect
+    attributes:
+      label: 期望行為
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 重現步驟
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 環境
+      placeholder: iPhone 17 / iOS 版本 / App 建置
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 嚴重度
+      options:
+        - 擋路（無法繼續）
+        - 明顯錯誤
+        - 小問題／體驗
+    validations:
+      required: true

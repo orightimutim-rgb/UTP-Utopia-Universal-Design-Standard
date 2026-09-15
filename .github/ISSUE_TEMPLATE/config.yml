@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub ↔ ChatGPT 同步協定
+    url: https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/blob/main/docs/GITHUB_GPT_SYNC.md
+    about: 先讀這份，再決定要用任務、錯誤回報還是文件議題。
+  - name: 任務板（Issues 未開時）
+    url: https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/blob/main/docs/TASK_BOARD.md
+    about: 目前用 Markdown 任務板追蹤 Now / Next / Done。

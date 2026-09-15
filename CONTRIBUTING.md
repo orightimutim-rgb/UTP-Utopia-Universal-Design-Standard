@@ -14,3 +14,11 @@ The current tree includes a SwiftUI iOS client for Cursor Cloud Agents. Keep cha
 Application folders under `applications/` should include a `README.md` that explains how the work serves universal design.
 
 For agent-operated work, see [AGENTS.md](AGENTS.md).
+
+## GitHub ↔ ChatGPT sync
+
+- Sync protocol: [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md)
+- Shared task board (while Issues are disabled): [docs/TASK_BOARD.md](docs/TASK_BOARD.md)
+- ChatGPT / Codex instructions: [applications/ai-assistants/chatgpt-custom-instructions.md](applications/ai-assistants/chatgpt-custom-instructions.md)
+
+Prefer small pull requests. Use the repository PR template. When Issues are enabled, use the task / bug / docs templates under `.github/ISSUE_TEMPLATE/`.

@@ -1,0 +1,25 @@
+name: 文件／同步
+description: 文件、AI 指令、GitHub 安排相關
+title: "[Docs] "
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: why
+    attributes:
+      label: 為什麼需要這份文件變更
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: 預計動到的路徑
+      placeholder: 例如 docs/GITHUB_GPT_SYNC.md、AGENTS.md
+  - type: checkboxes
+    id: audience
+    attributes:
+      label: 主要讀者
+      options:
+        - label: 人類（手機閱讀）
+        - label: ChatGPT / Codex
+        - label: Cursor Cloud Agent
+        - label: GitHub Copilot

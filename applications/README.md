@@ -25,7 +25,15 @@
 
 包括 Gemini、GPT、Claude、Grok、Copilot 等工具的自定義指令範例，幫助你用 AI 更有效地服務通用設計的場景。
 
-（待補充）
+👉 [查看 ChatGPT／Codex 指令與 GitHub 同步](ai-assistants/README.md)
+
+已就緒：
+
+- ChatGPT / Codex 自訂指令
+- GitHub ↔ GPT ↔ Cursor 同步協定（`docs/GITHUB_GPT_SYNC.md`）
+- 共用任務板（`docs/TASK_BOARD.md`）
+
+待補充：Claude、Gemini、Grok 等同級短指令。
 
 ---
 

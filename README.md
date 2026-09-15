@@ -70,6 +70,14 @@ The app includes three main tabs:
 - **New** — Form to describe a task, pick a repo/branch/model, and start an agent
 - **Settings** — Account info, appearance, sign out
 
+## GitHub ↔ ChatGPT collaboration
+
+This repo is meant to be driven from an iPhone via ChatGPT/Codex and GitHub:
+
+- [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md) — shared sync protocol
+- [docs/TASK_BOARD.md](docs/TASK_BOARD.md) — Now / Next / Done board (Issues currently disabled)
+- [applications/ai-assistants/](applications/ai-assistants/) — paste-ready ChatGPT instructions
+
 ## Privacy
 
 - Your API key is stored only in the device Keychain (`kSecAttrAccessibleWhenUnlockedThisDeviceOnly`)

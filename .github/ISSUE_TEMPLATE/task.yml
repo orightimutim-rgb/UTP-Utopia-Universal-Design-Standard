@@ -1,0 +1,47 @@
+name: 任務（給 ChatGPT / Cursor）
+description: 一個可交給 Cloud Agent 的小任務
+title: "[任務] "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        請保持任務小、可審查、可回退。參考 `docs/GITHUB_GPT_SYNC.md`。
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目標（一句話）
+      description: 完成後使用者會得到什麼
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 範圍
+      description: 要改／不要改的檔案、畫面、行為
+      placeholder: |
+        要改：
+        不要改：
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 完成定義
+      value: |
+        - [ ] 有 Draft PR
+        - [ ] 有驗證結果（或說明環境限制）
+        - [ ] 有預覽方式
+        - [ ] 已更新 docs/TASK_BOARD.md（若仍使用）
+    validations:
+      required: true
+  - type: dropdown
+    id: owner
+    attributes:
+      label: 建議執行者
+      options:
+        - Cursor Cloud Agent
+        - ChatGPT / Codex 先釐清
+        - 人類手動（GitHub Settings／簽署等）
+    validations:
+      required: true

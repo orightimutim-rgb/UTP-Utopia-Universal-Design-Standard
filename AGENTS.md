@@ -47,3 +47,7 @@ Do not enable unrelated plugins by default. Add Figma, Notion, Expo, Vercel, Net
 ## Shared learning and preview standard
 
 Also follow [AI_WORKFLOW.md](AI_WORKFLOW.md): explain the code in Traditional Chinese, verify changes, and provide a directly viewable or reproducible preview. Existing project-specific rules in this file remain in force.
+
+## GitHub ↔ ChatGPT sync
+
+When coordinating work across GitHub, ChatGPT/Codex, and Cursor Cloud Agents, follow [docs/GITHUB_GPT_SYNC.md](docs/GITHUB_GPT_SYNC.md) and keep [docs/TASK_BOARD.md](docs/TASK_BOARD.md) current while Issues are disabled.
