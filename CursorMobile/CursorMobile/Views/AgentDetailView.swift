@@ -7,10 +7,13 @@ struct AgentDetailView: View {
     @StateObject private var viewModel: AgentDetailViewModel
     @State private var showInfo = false
 
-    init(agentId: String, agentName: String) {
+    init(agentId: String, agentName: String, initialPrompt: String? = nil) {
         self.agentId = agentId
         self.agentName = agentName
-        _viewModel = StateObject(wrappedValue: AgentDetailViewModel(agentId: agentId))
+        _viewModel = StateObject(wrappedValue: AgentDetailViewModel(
+            agentId: agentId,
+            initialPrompt: initialPrompt
+        ))
     }
 
     var body: some View {
