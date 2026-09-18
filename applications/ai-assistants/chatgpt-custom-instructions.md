@@ -1,6 +1,8 @@
 # ChatGPT / Codex 自訂指令（本倉庫）
 
-把下列內容貼進 ChatGPT **自訂指令**，或每次開新對話時貼上「專案脈絡」。目標：讓 GPT 與 GitHub／Cursor 使用同一套安排。
+把下列內容貼進 ChatGPT **自訂指令**，或每次開新對話時貼上「專案脈絡」。目標：讓 GPT 與 GitHub／Cursor／Keep 使用同一套安排。
+
+> 更新重點（2026-09-18）：加入 Google Keep 靈感層（`docs/KEEP_GPT_SYNC.md`）與貼筆記分類規則。合併 #2／#3 後，請在 ChatGPT App **重新貼一次**整段「專案脈絡」。
 
 ## 專案脈絡（可貼）
 

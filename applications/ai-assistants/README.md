@@ -8,6 +8,7 @@
 | [../../docs/GITHUB_GPT_SYNC.md](../../docs/GITHUB_GPT_SYNC.md) | GitHub ↔ ChatGPT ↔ Cursor 同步協定 |
 | [../../docs/KEEP_GPT_SYNC.md](../../docs/KEEP_GPT_SYNC.md) | Google Keep ↔ ChatGPT 同步協定（手動貼上） |
 | [../../docs/learning/keep-inbox.md](../../docs/learning/keep-inbox.md) | Keep 筆記暫存匣（給 agent 讀） |
+| [../../docs/learning/GPT_DIALOGUE_INTAKE.md](../../docs/learning/GPT_DIALOGUE_INTAKE.md) | 如何提供 ChatGPT 對話全文供學習 |
 | [../../docs/TASK_BOARD.md](../../docs/TASK_BOARD.md) | 共用任務板（Issues 未開時） |
 
 ## 原則

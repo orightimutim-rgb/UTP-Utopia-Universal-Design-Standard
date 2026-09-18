@@ -62,7 +62,8 @@ Cursor Cloud Agent 開分支 cursor/<主題>-xxxx → 改碼 → push → 開 Dr
 | PR 範本 | `.github/PULL_REQUEST_TEMPLATE.md` | 已就緒 |
 | Issue 範本 | `.github/ISSUE_TEMPLATE/` | 檔案已就緒；需在 Settings 開啟 Issues |
 | Copilot 指示 | `.github/copilot-instructions.md` | 已就緒 |
-| GPT 自訂指令 | `applications/ai-assistants/chatgpt-custom-instructions.md` | 已就緒 |
+| GPT 自訂指令 | `applications/ai-assistants/chatgpt-custom-instructions.md` | 已就緒（含 Keep 規則） |
+| Keep ↔ GPT 協定 | `docs/KEEP_GPT_SYNC.md` | 已就緒（手動貼上，非 API） |
 | 任務板 | `docs/TASK_BOARD.md` | 已就緒（Issues 關閉時使用） |
 
 ## 你需要在 GitHub 網頁手動開的開關
@@ -79,7 +80,8 @@ Cursor Cloud Agent 開分支 cursor/<主題>-xxxx → 改碼 → push → 開 Dr
 
 | # | 項目 | 備註 |
 |---|------|------|
-| PR #2 | Improve Cloud Agent task streaming reliability on mobile | Draft，可作為下一個審閱優先 |
+| #2 / #3 | 串流穩定度 + GitHub↔GPT 同步 | 已合併進 `main` |
+| Keep 同步 | `docs/KEEP_GPT_SYNC.md` + ChatGPT 指示更新 | 見進行中的 PR／任務板 T-020 |
 | main | Cursor Mobile iOS 客戶端 + AI 工作流程文件 | 目前基準線 |
 
 ## 不要做的事

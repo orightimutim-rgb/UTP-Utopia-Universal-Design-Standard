@@ -17,6 +17,7 @@
 | ID | 標題 | 建議入口 | 完成定義 |
 |----|------|----------|----------|
 | T-021 | 在 Keep 建好 `#inbox #gpt #cursor #github #done` | 人類 | 標籤可用；第一則筆記貼進 GPT 或 keep-inbox |
+| T-015 | 提供「與 GPT 完整對話」供學習 | 人類 | 貼到 Notion intake 或 `docs/learning/` |
 | T-012 | Cursor Mobile：補單元測試骨架 | Cursor Agent | ViewModel／API 有可跑測試（需 macOS／Xcode） |
 | T-013 | 補齊 `applications/ai-assistants` 其他助理指令 | Cursor / ChatGPT | Claude／Gemini 等同風格短指令 |
 
