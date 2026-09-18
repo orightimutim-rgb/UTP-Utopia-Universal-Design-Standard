@@ -8,22 +8,26 @@
 
 | ID | 標題 | 負責人 | 連結 | 備註 |
 |----|------|--------|------|------|
-| T-001 | GitHub ↔ ChatGPT 同步安排 | Cursor Agent | 本 PR | 文件／範本／任務板 |
-| T-002 | Cloud Agent 串流穩定度（mobile） | — | [#2](https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/pull/2) | Draft PR，待審 |
+| T-020 | Google Keep ↔ GPT 同步安排 | Cursor Agent | 本 PR | 協定＋暫存匣＋ChatGPT 指令 |
+| T-010 | 在 GitHub Settings 開啟 Issues | 人類（網頁） | Settings → Features | Agent 無 admin，無法代開 |
+| T-014 | 貼上更新後的 ChatGPT 自訂指令 | 人類（ChatGPT App） | `chatgpt-custom-instructions.md` | 含 Keep 規則；Notion 已對齊 |
 
 ## Next（下一步，建議順序）
 
 | ID | 標題 | 建議入口 | 完成定義 |
 |----|------|----------|----------|
-| T-010 | 在 GitHub Settings 開啟 Issues | 網頁手動 | Issues 可開；可改用議題範本 |
-| T-011 | 審閱並決定 PR #2 | ChatGPT + GitHub | Merge／要求修改／關閉 |
-| T-012 | Cursor Mobile：補單元測試骨架 | Cursor Agent | 針對 ViewModel／API 客戶端有可跑測試（需 macOS CI 或本機 Xcode） |
+| T-021 | 在 Keep 建好 `#inbox #gpt #cursor #github #done` | 人類 | 標籤可用；第一則筆記貼進 GPT 或 keep-inbox |
+| T-015 | 提供「與 GPT 完整對話」供學習 | 人類 | 貼到 Notion intake 或 `docs/learning/` |
+| T-012 | Cursor Mobile：補單元測試骨架 | Cursor Agent | ViewModel／API 有可跑測試（需 macOS／Xcode） |
 | T-013 | 補齊 `applications/ai-assistants` 其他助理指令 | Cursor / ChatGPT | Claude／Gemini 等同風格短指令 |
+| T-016 | Issues 開啟後：把 Now 項遷成 GitHub Issue | Cursor Agent | 每項有 Issue 連結 |
 
 ## Done（已完成）
 
 | ID | 標題 | 連結 |
 |----|------|------|
+| T-001 | GitHub ↔ ChatGPT 同步安排 | [#3](https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/pull/3) merged |
+| T-002 / T-011 | Cloud Agent 串流穩定度 + 審閱合併 | [#2](https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/pull/2) merged |
 | T-000 | 新增 CONTRIBUTING 根文件 | [#1](https://github.com/orightimutim-rgb/UTP-Utopia-Universal-Design-Standard/pull/1) |
 | T-000b | 加入 AI_WORKFLOW／AGENTS／Claude／Copilot 指示 | main |
 

@@ -16,7 +16,8 @@
 1. **程式碼** → `main` 與已合併的 PR  
 2. **進行中工作** → 開啟中的 Pull Request（標題、說明、checklist）  
 3. **待辦與優先順序** → [`docs/TASK_BOARD.md`](TASK_BOARD.md)（因 Issues 目前關閉，先用任務板）  
-4. **AI 行為準則** → [`AGENTS.md`](../AGENTS.md) + [`AI_WORKFLOW.md`](../AI_WORKFLOW.md)
+4. **AI 行為準則** → [`AGENTS.md`](../AGENTS.md) + [`AI_WORKFLOW.md`](../AI_WORKFLOW.md)  
+5. **隨手靈感（Keep）** → [`KEEP_GPT_SYNC.md`](KEEP_GPT_SYNC.md)（手動貼上，非自動 API）
 
 ## 標準一回合流程（手機可用）
 
@@ -61,7 +62,8 @@ Cursor Cloud Agent 開分支 cursor/<主題>-xxxx → 改碼 → push → 開 Dr
 | PR 範本 | `.github/PULL_REQUEST_TEMPLATE.md` | 已就緒 |
 | Issue 範本 | `.github/ISSUE_TEMPLATE/` | 檔案已就緒；需在 Settings 開啟 Issues |
 | Copilot 指示 | `.github/copilot-instructions.md` | 已就緒 |
-| GPT 自訂指令 | `applications/ai-assistants/chatgpt-custom-instructions.md` | 已就緒 |
+| GPT 自訂指令 | `applications/ai-assistants/chatgpt-custom-instructions.md` | 已就緒（含 Keep 規則） |
+| Keep ↔ GPT 協定 | `docs/KEEP_GPT_SYNC.md` | 已就緒（手動貼上，非 API） |
 | 任務板 | `docs/TASK_BOARD.md` | 已就緒（Issues 關閉時使用） |
 
 ## 你需要在 GitHub 網頁手動開的開關
@@ -78,7 +80,8 @@ Cursor Cloud Agent 開分支 cursor/<主題>-xxxx → 改碼 → push → 開 Dr
 
 | # | 項目 | 備註 |
 |---|------|------|
-| PR #2 | Improve Cloud Agent task streaming reliability on mobile | Draft，可作為下一個審閱優先 |
+| #2 / #3 | 串流穩定度 + GitHub↔GPT 同步 | 已合併進 `main` |
+| Keep 同步 | `docs/KEEP_GPT_SYNC.md` + ChatGPT 指示更新 | 見進行中的 PR／任務板 T-020 |
 | main | Cursor Mobile iOS 客戶端 + AI 工作流程文件 | 目前基準線 |
 
 ## 不要做的事
